@@ -2,65 +2,43 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Data;
-using static Calculations.MoveCalc;
+using Actions;
 
-public class Game : MonoBehaviour
+public class Game : MonoBehaviour 
 {
-    // REFERENCES
+    // DATA
+    private PlayerData playerData = new PlayerData(7f, 13f, 0.025f);
+    private EnvironmentPhysicsData envPhysicsData = new EnvironmentPhysicsData(-9.81f, 0.2f);
+
+    // PLAYER REFERENCES
     public Transform playerCam;
     public GameObject player;
     public CharacterController playerController;
 
-    // DATA
-    private PlayerData playerData = new PlayerData(7f, 11f, 0.025f);
+    // ENVIRONMENT PHYSICS REFERENCES
+    [SerializeField] private LayerMask groundMask;
     
-    private void Update()
-    {
-        HandlePlayerInput();
-    }
 
-    private void HandlePlayerInput()
-    {
-        HandleDirectionalInput(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-    }
+    private void Update() {
 
-    private void HandleDirectionalInput(float horizontal, float vertical)
-    {
-        Vector3 direction = CalcInputDirection(horizontal, 0f, vertical);
-
-        // If the player has input movement
-        if (direction.magnitude >= 0.1) 
-        {
-            bool isSprinting = Input.GetKey(KeyCode.LeftShift);
-            float speed = HandleSprintInput(isSprinting);
-            ExecuteDirectionalMovement(direction, speed);
-        }
-        else
-        {
-            ExecuteIdle();
-        }
-    }
-
-    private float HandleSprintInput(bool isSprinting) => 
-        isSprinting ? playerData.RunSpeed : playerData.WalkSpeed;
-
-    private void ExecuteDirectionalMovement(Vector3 direction, float speed)
-    {
-        float targetAngle = CalcTargetAngleRelativeToCamera(direction, playerCam.eulerAngles.y);
-
-        player.transform.rotation = CalcRotation(
-            targetAngle,
-            player.transform.eulerAngles.y,
-            playerData.TurnSmoothTime
+        PlayerActions.HandlePlayerInput(
+            player.transform,
+            playerData,
+            playerCam.eulerAngles.y
         );
-        playerController.Move(CalcVelocity(CalcMoveDirection(targetAngle), speed));
+
+        EnvironmentPhysicsActions.UpdateGravity(
+            player.transform,
+            playerData,
+            envPhysicsData.Gravity,
+            envPhysicsData.GroundCheckDistance,
+            groundMask
+        );
+
+        PlayerActions.UpdatePlayerVelocity(
+            playerController,
+            playerData
+        );
     }
 
-    private void ExecuteIdle()
-    {
-
-    }
-
-
-    
 }
