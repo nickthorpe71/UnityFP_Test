@@ -15,15 +15,15 @@ public class Game : MonoBehaviour
     
     private void Update()
     {
-        PlayerInput();
+        HandlePlayerInput();
     }
 
-    private void PlayerInput()
+    private void HandlePlayerInput()
     {
         DirectionalInput();
     }
 
-    private void DirectionalInput()
+    private void HandleDirectionalInput()
     {
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");

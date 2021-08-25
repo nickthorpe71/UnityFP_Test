@@ -4,19 +4,33 @@ using System.Collections.Generic;
 namespace Data 
 {
     class PlayerData {
-        private float speed;
+        private float moveSpeed;
+        private float walkSpeed;
+        private float runSpeed;
         private float turnSmoothTime;
 
-        public PlayerData(float _speed, float _turnSmoothTime)
+        public PlayerData(float _moveSpeed, float _walkSpeed, float _runSpeed, float _turnSmoothTime)
         {
-            Speed = _speed;
+            MoveSpeed = _moveSpeed;
+            WalkSpeed = _walkSpeed;
+            RunSpeed = _runSpeed;
             TurnSmoothTime = _turnSmoothTime;
         }
 
-        public float Speed 
+        public float MoveSpeed 
         {
-            get => speed;
-            set { speed = value; }
+            get => moveSpeed;
+            set { moveSpeed = value; }
+        }
+        public float WalkSpeed 
+        {
+            get => walkSpeed;
+            set { walkSpeed = value; }
+        }
+        public float RunSpeed 
+        {
+            get => runSpeed;
+            set { runSpeed = value; }
         }
         public float TurnSmoothTime 
         {
