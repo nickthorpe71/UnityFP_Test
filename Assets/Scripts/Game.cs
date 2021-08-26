@@ -7,8 +7,8 @@ using Actions;
 public class Game : MonoBehaviour 
 {
     // DATA
-    private PlayerData playerData = new PlayerData(7f, 13f, 0.025f);
-    private EnvironmentPhysicsData envPhysicsData = new EnvironmentPhysicsData(-9.81f, 0.2f);
+    private PlayerData playerData = new PlayerData();
+    private EnvironmentPhysicsData envPhysicsData = new EnvironmentPhysicsData();
 
     // PLAYER REFERENCES
     public Transform playerCam;
@@ -24,7 +24,8 @@ public class Game : MonoBehaviour
         PlayerActions.HandlePlayerInput(
             player.transform,
             playerData,
-            playerCam.eulerAngles.y
+            playerCam.eulerAngles.y,
+            envPhysicsData.Gravity
         );
 
         EnvironmentPhysicsActions.UpdateGravity(

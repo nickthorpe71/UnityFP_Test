@@ -6,12 +6,12 @@ namespace Data
 {
     public class EnvironmentPhysicsData 
     {
-        private float groundCheckDistance = 0.2f;
-        private float gravity = -9.81f;
+        private float groundCheckDistance;
+        private float gravity;
 
-        public EnvironmentPhysicsData(float _gravity, float _groundCheckDistance) {
-            gravity = _gravity;
-            groundCheckDistance = _groundCheckDistance;
+        public EnvironmentPhysicsData() {
+            gravity = -33.81f;
+            groundCheckDistance = 0.2f;
         }
 
         public float Gravity {

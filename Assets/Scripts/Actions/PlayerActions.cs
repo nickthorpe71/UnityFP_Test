@@ -10,11 +10,11 @@ namespace Actions
     {
         // PHYSICS
         public static void UpdatePlayerVelocity(CharacterController controller, PlayerData playerData) {
-            controller.Move(CalcVelocity(playerData.Velocity, playerData.CurrentSpeed));
+            controller.Move(playerData.Velocity * Time.deltaTime);
         }
 
         // INPUT HANDLERS
-        public static void HandlePlayerInput(Transform playerTransform, PlayerData playerData, float cameraYRotation) {
+        public static void HandlePlayerInput(Transform playerTransform, PlayerData playerData, float cameraYRotation, float gravity) {
             HandleDirectionalInput(
                 playerTransform,
                 playerData,
@@ -23,14 +23,16 @@ namespace Actions
                 Input.GetAxisRaw("Vertical")
             );
             HandleSprintInput(Input.GetKey(KeyCode.LeftShift), playerData);
-            HandleJumpInput();
+            HandleJumpInput(Input.GetKeyDown(KeyCode.Space), playerData, gravity);
         }
+
         public static void HandleDirectionalInput(
             Transform playerTransform,
             PlayerData playerData,
             float cameraYRotation,
             float horizontal,
-            float vertical) {
+            float vertical
+            ){
             Vector3 inputDirection = CalcInputDirection(horizontal, 0f, vertical);
 
             // If the player has input movement
@@ -39,19 +41,23 @@ namespace Actions
             else
                 ExecuteIdle(playerData);
         }
-        public static void HandleSprintInput(bool isSprinting, PlayerData playerData) {
-            playerData.CurrentSpeed = isSprinting ? playerData.RunSpeed : playerData.WalkSpeed;
-        }
-        public static void HandleJumpInput() {
 
+        public static void HandleSprintInput(bool isHoldingSprint, PlayerData playerData) {
+            playerData.CurrentSpeed = isHoldingSprint ? playerData.RunSpeed : playerData.WalkSpeed;
         }
 
-        // EXECUTION ACTIONS
+        public static void HandleJumpInput(bool didPressJump, PlayerData playerData, float gravity) {
+            if (playerData.IsGrounded && didPressJump)
+                playerData.YVelocity = CalcJump(playerData.JumpHeight, gravity);
+        }
+
+        // EXECUTION
         public static void ExecuteDirectionalMovement(
             Transform playerTransform,
             PlayerData playerData,
             float cameraYRotation,
-            Vector3 direction) {
+            Vector3 direction
+            ){
             float targetAngle = CalcTargetAngleRelativeToCamera(direction, cameraYRotation);
 
             playerTransform.rotation = CalcRotation(
@@ -61,9 +67,10 @@ namespace Actions
             );
 
             Vector3 directionalMovementVector = CalcMoveDirection(targetAngle);
-            playerData.XVelocity = directionalMovementVector.x;
-            playerData.ZVelocity = directionalMovementVector.z;
+            playerData.XVelocity = directionalMovementVector.x * playerData.CurrentSpeed;
+            playerData.ZVelocity = directionalMovementVector.z * playerData.CurrentSpeed;
         }
+
         public static void ExecuteIdle(PlayerData playerData) {
             playerData.XVelocity = 0;
             playerData.ZVelocity = 0;
