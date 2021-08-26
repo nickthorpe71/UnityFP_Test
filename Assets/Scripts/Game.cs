@@ -18,6 +18,9 @@ public class Game : MonoBehaviour
     // ENVIRONMENT PHYSICS REFERENCES
     [SerializeField] private LayerMask groundMask;
     
+    private void Awake() {
+        Cursor.lockState = CursorLockMode.Locked;
+    }
 
     private void Update() {
 
