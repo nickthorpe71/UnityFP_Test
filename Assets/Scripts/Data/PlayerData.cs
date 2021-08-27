@@ -23,9 +23,9 @@ namespace Data
             CurrentSpeed = 0;
             WalkSpeed = 7f;
             RunSpeed = 13f;
-            TurnSmoothTime = 0.033f;
-            IsGrounded = true;
+            TurnSmoothTime = 0.02f;
             JumpHeight = 3.43f;
+            IsGrounded = true;
         }
 
         public Vector3 Velocity {

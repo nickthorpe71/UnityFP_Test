@@ -1,10 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Data;
 using static Calculations.MoveCalc;
 
-namespace Actions 
+namespace Actions
 {
     public static class PlayerActions 
     {
@@ -14,7 +15,14 @@ namespace Actions
         }
 
         // INPUT HANDLERS
-        public static void HandlePlayerInput(Transform playerTransform, PlayerData playerData, float cameraYRotation, float gravity) {
+        public static void HandlePlayerInput(
+            Transform playerTransform,
+            PlayerData playerData,
+            float cameraYRotation,
+            float gravity,
+            Animator playerAnimator,
+            Func<IEnumerator, IEnumerator> startRoutine
+            ){
             HandleDirectionalInput(
                 playerTransform,
                 playerData,
@@ -22,11 +30,11 @@ namespace Actions
                 Input.GetAxisRaw("Horizontal"),
                 Input.GetAxisRaw("Vertical")
             );
-            HandleSprintInput(Input.GetKey(KeyCode.LeftShift), playerData);
             HandleJumpInput(Input.GetKeyDown(KeyCode.Space), playerData, gravity);
+            HandleMeleeInput(Input.GetKeyDown(KeyCode.Mouse0), playerAnimator, startRoutine);
         }
 
-        public static void HandleDirectionalInput(
+        private static void HandleDirectionalInput(
             Transform playerTransform,
             PlayerData playerData,
             float cameraYRotation,
@@ -42,13 +50,23 @@ namespace Actions
                 ExecuteIdle(playerData);
         }
 
-        public static void HandleSprintInput(bool isHoldingSprint, PlayerData playerData) {
-            playerData.CurrentSpeed = isHoldingSprint ? playerData.RunSpeed : playerData.WalkSpeed;
-        }
-
-        public static void HandleJumpInput(bool didPressJump, PlayerData playerData, float gravity) {
+        private static void HandleJumpInput(bool didPressJump, PlayerData playerData, float gravity) {
             if (playerData.IsGrounded && didPressJump)
                 playerData.YVelocity = CalcJump(playerData.JumpHeight, gravity);
+        }
+
+        private static void HandleMeleeInput(bool didPressLeftMouse, Animator animator, Func<IEnumerator, IEnumerator> startRoutine) {
+            if(didPressLeftMouse){
+                startRoutine(ExecuteMeleeAttack(animator));
+            }
+        }
+
+        private static IEnumerator ExecuteMeleeAttack(Animator animator) {
+            animator.SetLayerWeight(animator.GetLayerIndex("Attack Layer"), 1);
+            animator.SetTrigger("SwordAttack");
+
+            yield return new WaitForSeconds(1.232f);
+            animator.SetLayerWeight(animator.GetLayerIndex("Attack Layer"), 0);
         }
 
         // EXECUTION
@@ -58,6 +76,7 @@ namespace Actions
             float cameraYRotation,
             Vector3 direction
             ){
+            playerData.CurrentSpeed = Input.GetKey(KeyCode.LeftShift) ? playerData.RunSpeed : playerData.WalkSpeed;
             float targetAngle = CalcTargetAngleRelativeToCamera(direction, cameraYRotation);
 
             playerTransform.rotation = CalcRotation(
@@ -72,8 +91,9 @@ namespace Actions
         }
 
         public static void ExecuteIdle(PlayerData playerData) {
-            playerData.XVelocity = 0;
-            playerData.ZVelocity = 0;
+            playerData.CurrentSpeed = 0f;
+            playerData.XVelocity = 0f;
+            playerData.ZVelocity = 0f;
         }
     }
 }

@@ -14,6 +14,7 @@ public class Game : MonoBehaviour
     public Transform playerCam;
     public GameObject player;
     public CharacterController playerController;
+    public Animator playerAnimator;
 
     // ENVIRONMENT PHYSICS REFERENCES
     [SerializeField] private LayerMask groundMask;
@@ -28,7 +29,9 @@ public class Game : MonoBehaviour
             player.transform,
             playerData,
             playerCam.eulerAngles.y,
-            envPhysicsData.Gravity
+            envPhysicsData.Gravity,
+            playerAnimator,
+            StartRoutine
         );
 
         EnvironmentPhysicsActions.UpdateGravity(
@@ -43,6 +46,25 @@ public class Game : MonoBehaviour
             playerController,
             playerData
         );
+
+        UpdatePlayerMoveAnimation(playerData);
+    }
+
+    public void StartRoutine(IEnumerator routine){
+        StartCoroutine(routine());
+    }
+
+    private void UpdatePlayerMoveAnimation(PlayerData playerData) {
+        if (playerData.IsGrounded) {
+            float speedPercent = playerData.CurrentSpeed / playerData.RunSpeed;
+            playerAnimator.SetFloat("Speed", speedPercent, 0.2f, Time.deltaTime);
+            playerAnimator.ResetTrigger("Jump");
+            playerAnimator.SetBool("Fall", false);
+        } else {
+            playerAnimator.SetBool("Fall", true);
+            if (playerData.YVelocity >= 0)
+                playerAnimator.SetTrigger("Jump");
+        }
     }
 
 }

@@ -360,6 +360,7 @@ MonoBehaviour:
   playerCam: {fileID: 963194228}
   player: {fileID: 958464257}
   playerController: {fileID: 958464259}
+  playerAnimator: {fileID: 1928785776}
   groundMask:
     serializedVersion: 2
     m_Bits: 8
@@ -663,7 +664,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 958464257}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.58, z: 0}
+  m_LocalPosition: {x: 0, y: 0.02, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1928785775}
@@ -758,7 +759,7 @@ Camera:
     height: 1
   near clip plane: 0.01
   far clip plane: 5000
-  field of view: 42
+  field of view: 59
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -783,8 +784,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: -0.0019697223, y: 0.00069407735, z: 0.000008588112, w: 0.99999785}
-  m_LocalPosition: {x: 0, y: 1.9742867, z: -10.463084}
+  m_LocalRotation: {x: -0.0117940735, y: 0.00071832933, z: 0.00001948404, w: 0.9999302}
+  m_LocalPosition: {x: 0, y: 0.4142866, z: -10.463084}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1066,6 +1067,14 @@ PrefabInstance:
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 400018, guid: ed1f8609fea7f9348b92206e3d12581e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.026
+      objectReference: {fileID: 0}
+    - target: {fileID: 400018, guid: ed1f8609fea7f9348b92206e3d12581e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.091
+      objectReference: {fileID: 0}
     - target: {fileID: 400042, guid: ed1f8609fea7f9348b92206e3d12581e, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -1122,10 +1131,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 400046, guid: ed1f8609fea7f9348b92206e3d12581e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9500000, guid: ed1f8609fea7f9348b92206e3d12581e, type: 3}
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 430faf61d25e15444a4f6932918e8620, type: 2}
+    - target: {fileID: 9500000, guid: ed1f8609fea7f9348b92206e3d12581e, type: 3}
+      propertyPath: m_WarningMessage
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 9500000, guid: ed1f8609fea7f9348b92206e3d12581e, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed1f8609fea7f9348b92206e3d12581e, type: 3}
 --- !u!1001 &1039562859
@@ -1433,7 +1454,7 @@ MonoBehaviour:
   m_Follow: {fileID: 958464258}
   m_CommonLens: 1
   m_Lens:
-    FieldOfView: 42
+    FieldOfView: 59
     OrthographicSize: 10
     NearClipPlane: 0.01
     FarClipPlane: 5000
@@ -1449,7 +1470,7 @@ MonoBehaviour:
   m_YAxis:
     Value: 0.6
     m_SpeedMode: 0
-    m_MaxSpeed: 6
+    m_MaxSpeed: 11
     m_AccelTime: 0.1
     m_DecelTime: 0.1
     m_InputAxisName: Mouse Y
@@ -1473,7 +1494,7 @@ MonoBehaviour:
   m_XAxis:
     Value: 0
     m_SpeedMode: 0
-    m_MaxSpeed: 600
+    m_MaxSpeed: 1200
     m_AccelTime: 0.1
     m_DecelTime: 0.1
     m_InputAxisName: Mouse X
@@ -1520,7 +1541,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1274434674}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.9742867, z: -10.463084}
+  m_LocalPosition: {x: 0, y: 0.4142866, z: -10.463084}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1376272053}
@@ -1661,7 +1682,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
   m_Lens:
-    FieldOfView: 42
+    FieldOfView: 59
     OrthographicSize: 10
     NearClipPlane: 0.01
     FarClipPlane: 5000
@@ -1682,7 +1703,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1376272051}
-  m_LocalRotation: {x: 0.018831786, y: -0.000000017203329, z: 3.2402686e-10, w: 0.9998227}
+  m_LocalRotation: {x: 0.018831784, y: -0.000000017203329, z: 3.2402683e-10, w: 0.9998227}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1960,7 +1981,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
   m_Lens:
-    FieldOfView: 42
+    FieldOfView: 59
     OrthographicSize: 10
     NearClipPlane: 0.01
     FarClipPlane: 5000
@@ -1981,7 +2002,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1682371663}
-  m_LocalRotation: {x: -0.019477127, y: -0.0009094655, z: -0.000017717142, w: 0.9998099}
+  m_LocalRotation: {x: -0.03749598, y: -0.0009409733, z: -0.000035307556, w: 0.99929637}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -2280,7 +2301,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
   m_Lens:
-    FieldOfView: 42
+    FieldOfView: 59
     OrthographicSize: 10
     NearClipPlane: 0.01
     FarClipPlane: 5000
@@ -2301,7 +2322,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1854518348}
-  m_LocalRotation: {x: -0.007170324, y: 0.00086759793, z: 0.0000062211197, w: 0.99997395}
+  m_LocalRotation: {x: -0.01944994, y: 0.0008979712, z: 0.000017468798, w: 0.99981046}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -2317,6 +2338,11 @@ Transform:
 --- !u!4 &1928785775 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400042, guid: ed1f8609fea7f9348b92206e3d12581e, type: 3}
+  m_PrefabInstance: {fileID: 1029021741}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1928785776 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 9500000, guid: ed1f8609fea7f9348b92206e3d12581e, type: 3}
   m_PrefabInstance: {fileID: 1029021741}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1940441935
