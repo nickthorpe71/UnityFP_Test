@@ -25,7 +25,7 @@ namespace Actions
         {
             HandleDirectionalInput(playerTransform, playerData, cameraYRotation, Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
             HandleJumpInput(Input.GetKeyDown(KeyCode.Space), playerData, gravity);
-            HandleMeleeInput(Input.GetKeyDown(KeyCode.Mouse0), playerAnimator, startRoutine);
+            HandleMeleeInput(Input.GetKeyDown(KeyCode.Mouse0), playerData, playerAnimator, startRoutine);
         }
 
         private static void HandleDirectionalInput(
@@ -50,21 +50,24 @@ namespace Actions
                 playerData.YVelocity = CalcJump(playerData.JumpHeight, gravity);
         }
 
-        private static void HandleMeleeInput(bool didPressLeftMouse, Animator animator, Action<IEnumerator> startRoutine)
+        private static void HandleMeleeInput(bool didPressLeftMouse, PlayerData playerData, Animator animator, Action<IEnumerator> startRoutine)
         {
-            if(didPressLeftMouse)
+            if(didPressLeftMouse && playerData.CanAttack)
             {
-                startRoutine(ExecuteMeleeAttack(animator));
+                startRoutine(ExecuteMeleeAttack(animator, playerData));
             }
         }
 
-        private static IEnumerator ExecuteMeleeAttack(Animator animator) 
+        private static IEnumerator ExecuteMeleeAttack(Animator animator, PlayerData playerData) 
         {
+            Debug.Log("made it");
+            playerData.CanAttack = false;
             animator.SetLayerWeight(animator.GetLayerIndex("Attack Layer"), 1);
             animator.SetTrigger("SwordAttack");
 
-            yield return new WaitForSeconds(1.232f);
+            yield return new WaitForSeconds(playerData.AttackCooldown);
             animator.SetLayerWeight(animator.GetLayerIndex("Attack Layer"), 0);
+            playerData.CanAttack = true;
         }
 
         // EXECUTION

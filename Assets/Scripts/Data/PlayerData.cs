@@ -35,7 +35,7 @@ namespace Data
             IsGrounded = true;
 
             // ATTACK
-            AttackCooldown = 1.232f;
+            AttackCooldown = 0.93f;
             CanAttack = true;
         }
 
