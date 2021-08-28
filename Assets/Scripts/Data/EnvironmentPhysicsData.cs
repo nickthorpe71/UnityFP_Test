@@ -9,19 +9,14 @@ namespace Data
         private float groundCheckDistance;
         private float gravity;
 
-        public EnvironmentPhysicsData() {
+        public EnvironmentPhysicsData() 
+        {
             gravity = -33.81f;
             groundCheckDistance = 0.2f;
         }
 
-        public float Gravity {
-            get => gravity;
-            set { gravity = value; }
-        }
-        public float GroundCheckDistance {
-            get => groundCheckDistance;
-            set { groundCheckDistance = value; }
-        }
+        public float Gravity { get => gravity; set { gravity = value; } }
+        public float GroundCheckDistance { get => groundCheckDistance; set { groundCheckDistance = value; } }
 
     }
 }

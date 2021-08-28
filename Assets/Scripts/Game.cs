@@ -19,12 +19,13 @@ public class Game : MonoBehaviour
     // ENVIRONMENT PHYSICS REFERENCES
     [SerializeField] private LayerMask groundMask;
     
-    private void Awake() {
+    private void Awake()
+    {
         Cursor.lockState = CursorLockMode.Locked;
     }
 
-    private void Update() {
-
+    private void Update() 
+    {
         PlayerActions.HandlePlayerInput(
             player.transform,
             playerData,
@@ -50,17 +51,22 @@ public class Game : MonoBehaviour
         UpdatePlayerMoveAnimation(playerData);
     }
 
-    public void StartRoutine(IEnumerator routine){
-        StartCoroutine(routine());
+    public void StartRoutine(IEnumerator routine)
+    {
+        StartCoroutine(routine);
     }
 
-    private void UpdatePlayerMoveAnimation(PlayerData playerData) {
-        if (playerData.IsGrounded) {
+    private void UpdatePlayerMoveAnimation(PlayerData playerData) 
+    {
+        if (playerData.IsGrounded)
+        {
             float speedPercent = playerData.CurrentSpeed / playerData.RunSpeed;
             playerAnimator.SetFloat("Speed", speedPercent, 0.2f, Time.deltaTime);
             playerAnimator.ResetTrigger("Jump");
             playerAnimator.SetBool("Fall", false);
-        } else {
+        }
+        else 
+        {
             playerAnimator.SetBool("Fall", true);
             if (playerData.YVelocity >= 0)
                 playerAnimator.SetTrigger("Jump");

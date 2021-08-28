@@ -14,7 +14,8 @@ namespace Calculations
         public static float CalcTargetAngleRelativeToCamera(Vector3 direction, float cameraRotation)
             => Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cameraRotation;
 
-        public static Quaternion CalcRotation(float targetAngle, float currentYRotation, float smoothTime) {
+        public static Quaternion CalcRotation(float targetAngle, float currentYRotation, float smoothTime) 
+        {
             float turnSmoothVelocity = 0.0f;
             float angle = Mathf.SmoothDampAngle(currentYRotation, targetAngle, ref turnSmoothVelocity, smoothTime);
             return Quaternion.Euler(0f, angle, 0f);

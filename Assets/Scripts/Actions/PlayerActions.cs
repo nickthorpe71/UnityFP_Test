@@ -21,15 +21,9 @@ namespace Actions
             float cameraYRotation,
             float gravity,
             Animator playerAnimator,
-            Func<IEnumerator, IEnumerator> startRoutine
-            ){
-            HandleDirectionalInput(
-                playerTransform,
-                playerData,
-                cameraYRotation,
-                Input.GetAxisRaw("Horizontal"),
-                Input.GetAxisRaw("Vertical")
-            );
+            Action<IEnumerator> startRoutine)
+        {
+            HandleDirectionalInput(playerTransform, playerData, cameraYRotation, Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
             HandleJumpInput(Input.GetKeyDown(KeyCode.Space), playerData, gravity);
             HandleMeleeInput(Input.GetKeyDown(KeyCode.Mouse0), playerAnimator, startRoutine);
         }
@@ -39,8 +33,8 @@ namespace Actions
             PlayerData playerData,
             float cameraYRotation,
             float horizontal,
-            float vertical
-            ){
+            float vertical)
+        {
             Vector3 inputDirection = CalcInputDirection(horizontal, 0f, vertical);
 
             // If the player has input movement
@@ -50,18 +44,22 @@ namespace Actions
                 ExecuteIdle(playerData);
         }
 
-        private static void HandleJumpInput(bool didPressJump, PlayerData playerData, float gravity) {
+        private static void HandleJumpInput(bool didPressJump, PlayerData playerData, float gravity) 
+        {
             if (playerData.IsGrounded && didPressJump)
                 playerData.YVelocity = CalcJump(playerData.JumpHeight, gravity);
         }
 
-        private static void HandleMeleeInput(bool didPressLeftMouse, Animator animator, Func<IEnumerator, IEnumerator> startRoutine) {
-            if(didPressLeftMouse){
+        private static void HandleMeleeInput(bool didPressLeftMouse, Animator animator, Action<IEnumerator> startRoutine)
+        {
+            if(didPressLeftMouse)
+            {
                 startRoutine(ExecuteMeleeAttack(animator));
             }
         }
 
-        private static IEnumerator ExecuteMeleeAttack(Animator animator) {
+        private static IEnumerator ExecuteMeleeAttack(Animator animator) 
+        {
             animator.SetLayerWeight(animator.GetLayerIndex("Attack Layer"), 1);
             animator.SetTrigger("SwordAttack");
 
@@ -74,8 +72,8 @@ namespace Actions
             Transform playerTransform,
             PlayerData playerData,
             float cameraYRotation,
-            Vector3 direction
-            ){
+            Vector3 direction)
+        {
             playerData.CurrentSpeed = Input.GetKey(KeyCode.LeftShift) ? playerData.RunSpeed : playerData.WalkSpeed;
             float targetAngle = CalcTargetAngleRelativeToCamera(direction, cameraYRotation);
 
@@ -90,7 +88,8 @@ namespace Actions
             playerData.ZVelocity = directionalMovementVector.z * playerData.CurrentSpeed;
         }
 
-        public static void ExecuteIdle(PlayerData playerData) {
+        public static void ExecuteIdle(PlayerData playerData)
+        {
             playerData.CurrentSpeed = 0f;
             playerData.XVelocity = 0f;
             playerData.ZVelocity = 0f;
