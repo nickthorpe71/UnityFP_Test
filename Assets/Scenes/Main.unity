@@ -142,7 +142,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 100000, guid: b5f2d01de5350774fbef827b55616de1, type: 3}
       propertyPath: m_Name
-      value: OM_Sword_R1
+      value: ActiveSword
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: b5f2d01de5350774fbef827b55616de1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: b5f2d01de5350774fbef827b55616de1, type: 3}
       propertyPath: m_RootOrder
@@ -202,6 +206,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b5f2d01de5350774fbef827b55616de1, type: 3}
+--- !u!1 &355516823 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100000, guid: b5f2d01de5350774fbef827b55616de1, type: 3}
+  m_PrefabInstance: {fileID: 1126910045}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &457555155
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -378,6 +387,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 425668, guid: 673a5daab7ec28d4c9e7c80ea6a793c1, type: 3}
   m_PrefabInstance: {fileID: 3263547501312474669}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &660819710 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100000, guid: b5f2d01de5350774fbef827b55616de1, type: 3}
+  m_PrefabInstance: {fileID: 258904762}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &665102147 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 425668, guid: e403bfb859c346040858d48e9c0c7150, type: 3}
@@ -430,6 +444,8 @@ MonoBehaviour:
   player: {fileID: 958464257}
   playerController: {fileID: 958464259}
   playerAnimator: {fileID: 1928785776}
+  activeSword: {fileID: 660819710}
+  inactiveSword: {fileID: 355516823}
   groundMask:
     serializedVersion: 2
     m_Bits: 8
@@ -1406,21 +1422,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1338526118}
     m_Modifications:
+    - target: {fileID: 100000, guid: b5f2d01de5350774fbef827b55616de1, type: 3}
+      propertyPath: m_Name
+      value: InactiveSword
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: b5f2d01de5350774fbef827b55616de1, type: 3}
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: b5f2d01de5350774fbef827b55616de1, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.5
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: b5f2d01de5350774fbef827b55616de1, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.5
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: b5f2d01de5350774fbef827b55616de1, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.5
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: b5f2d01de5350774fbef827b55616de1, type: 3}
       propertyPath: m_LocalPosition.x

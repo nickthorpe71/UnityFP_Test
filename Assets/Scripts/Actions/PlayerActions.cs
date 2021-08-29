@@ -15,31 +15,21 @@ namespace Actions
         }
 
         // INPUT HANDLERS
-        public static void HandlePlayerInput(
-            Transform playerTransform,
-            PlayerData playerData,
-            float cameraYRotation,
-            float gravity,
-            Animator playerAnimator,
-            Action<IEnumerator> startRoutine)
+        public static void HandlePlayerInput(PlayerData playerData, float gravity, Action<IEnumerator> startRoutine)
         {
-            HandleDirectionalInput(playerTransform, playerData, cameraYRotation, Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+            HandleDirectionalInput(playerData, Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
             HandleJumpInput(Input.GetKeyDown(KeyCode.Space), playerData, gravity);
-            HandleMeleeInput(Input.GetKeyDown(KeyCode.Mouse0), playerData, playerAnimator, startRoutine);
+            HandleMeleeInput(Input.GetKeyDown(KeyCode.Mouse0), playerData, startRoutine);
+            HandleRangedInput(Input.GetKeyDown(KeyCode.Mouse1), playerData, startRoutine);
         }
 
-        private static void HandleDirectionalInput(
-            Transform playerTransform,
-            PlayerData playerData,
-            float cameraYRotation,
-            float horizontal,
-            float vertical)
+        private static void HandleDirectionalInput(PlayerData playerData, float horizontal, float vertical)
         {
             Vector3 inputDirection = CalcInputDirection(horizontal, 0f, vertical);
 
             // If the player has input movement
             if (inputDirection.magnitude >= 0.1)
-                ExecuteDirectionalMovement(playerTransform, playerData, cameraYRotation, inputDirection);
+                ExecuteDirectionalMovement(playerData, inputDirection);
             else
                 ExecuteIdle(playerData);
         }
@@ -50,39 +40,42 @@ namespace Actions
                 playerData.YVelocity = CalcJump(playerData.JumpHeight, gravity);
         }
 
-        private static void HandleMeleeInput(bool didPressLeftMouse, PlayerData playerData, Animator animator, Action<IEnumerator> startRoutine)
+        private static void HandleMeleeInput(bool didPressLeftMouse, PlayerData playerData, Action<IEnumerator> startRoutine)
         {
             if(didPressLeftMouse && playerData.CanAttack)
-            {
-                startRoutine(ExecuteMeleeAttack(animator, playerData));
-            }
+                startRoutine(ExecuteMeleeAttack(playerData));
         }
 
-        private static IEnumerator ExecuteMeleeAttack(Animator animator, PlayerData playerData) 
+        private static void HandleRangedInput(bool didPressRightMouse, PlayerData playerData, Action<IEnumerator> startRoutine)
         {
-            Debug.Log("made it");
-            playerData.CanAttack = false;
-            animator.SetLayerWeight(animator.GetLayerIndex("Attack Layer"), 1);
-            animator.SetTrigger("SwordAttack");
-
-            yield return new WaitForSeconds(playerData.AttackCooldown);
-            animator.SetLayerWeight(animator.GetLayerIndex("Attack Layer"), 0);
-            playerData.CanAttack = true;
+            if(didPressRightMouse && playerData.CanAttack)
+                startRoutine(ExecuteMeleeAttack(playerData));
         }
 
         // EXECUTION
-        public static void ExecuteDirectionalMovement(
-            Transform playerTransform,
-            PlayerData playerData,
-            float cameraYRotation,
-            Vector3 direction)
+        private static IEnumerator ExecuteMeleeAttack(PlayerData playerData) 
+        {
+            playerData.CanAttack = false;
+            playerData.ActiveSword.SetActive(true);
+            playerData.InactiveSword.SetActive(false);
+            playerData.Anim.SetLayerWeight(playerData.Anim.GetLayerIndex("Attack Layer"), 1);
+            playerData.Anim.SetTrigger("SwordAttack");
+
+            yield return new WaitForSeconds(playerData.AttackCooldown);
+            playerData.Anim.SetLayerWeight(playerData.Anim.GetLayerIndex("Attack Layer"), 0);
+            playerData.CanAttack = true;
+            playerData.ActiveSword.SetActive(false);
+            playerData.InactiveSword.SetActive(true);
+        }
+
+        public static void ExecuteDirectionalMovement(PlayerData playerData, Vector3 direction)
         {
             playerData.CurrentSpeed = Input.GetKey(KeyCode.LeftShift) ? playerData.RunSpeed : playerData.WalkSpeed;
-            float targetAngle = CalcTargetAngleRelativeToCamera(direction, cameraYRotation);
+            float targetAngle = CalcTargetAngleRelativeToCamera(direction, playerData.Cam.eulerAngles.y);
 
-            playerTransform.rotation = CalcRotation(
+            playerData.Player.transform.rotation = CalcRotation(
                 targetAngle,
-                playerTransform.eulerAngles.y,
+                playerData.Player.transform.eulerAngles.y,
                 playerData.TurnSmoothTime
             );
 
