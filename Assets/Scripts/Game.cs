@@ -8,11 +8,15 @@ public class Game : MonoBehaviour
 {
     // PLAYER REFERENCES
     [SerializeField] private Transform playerCam;
+    [SerializeField] private GameObject mainCam;
+    [SerializeField] private GameObject aimCam;
     [SerializeField] private GameObject player;
     [SerializeField] private CharacterController playerController;
     [SerializeField] private Animator playerAnimator;
     [SerializeField] private GameObject activeSword;
     [SerializeField] private GameObject inactiveSword;
+    [SerializeField] private GameObject activeBow;
+    [SerializeField] private GameObject inactiveBow;
 
     // ENVIRONMENT PHYSICS REFERENCES
     [SerializeField] private LayerMask groundMask;
@@ -35,12 +39,14 @@ public class Game : MonoBehaviour
         playerController,
         playerAnimator,
         activeSword,
-        inactiveSword);
+        inactiveSword,
+        activeBow,
+        inactiveBow);
     }
 
     private void Update() 
     {
-        PlayerActions.HandlePlayerInput(playerData, envPhysicsData.Gravity, StartRoutine);
+        PlayerActions.HandlePlayerInput(playerData, envPhysicsData.Gravity, mainCam, aimCam, StartRoutine);
 
         EnvironmentPhysicsActions.UpdateGravity(
             player.transform,

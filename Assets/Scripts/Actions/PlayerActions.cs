@@ -15,12 +15,12 @@ namespace Actions
         }
 
         // INPUT HANDLERS
-        public static void HandlePlayerInput(PlayerData playerData, float gravity, Action<IEnumerator> startRoutine)
+        public static void HandlePlayerInput(PlayerData playerData, float gravity, GameObject mainCam, GameObject aimCam, Action<IEnumerator> startRoutine)
         {
             HandleDirectionalInput(playerData, Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
             HandleJumpInput(Input.GetKeyDown(KeyCode.Space), playerData, gravity);
             HandleMeleeInput(Input.GetKeyDown(KeyCode.Mouse0), playerData, startRoutine);
-            HandleRangedInput(Input.GetKeyDown(KeyCode.Mouse1), playerData, startRoutine);
+            HandleRangedInput(Input.GetKeyDown(KeyCode.Mouse1), Input.GetKeyUp(KeyCode.Mouse1), playerData, mainCam, aimCam, startRoutine);
         }
 
         private static void HandleDirectionalInput(PlayerData playerData, float horizontal, float vertical)
@@ -42,42 +42,82 @@ namespace Actions
 
         private static void HandleMeleeInput(bool didPressLeftMouse, PlayerData playerData, Action<IEnumerator> startRoutine)
         {
-            if(didPressLeftMouse && playerData.CanAttack)
+            if(didPressLeftMouse && playerData.CanMeleeAttack)
                 startRoutine(ExecuteMeleeAttack(playerData));
         }
 
-        private static void HandleRangedInput(bool didPressRightMouse, PlayerData playerData, Action<IEnumerator> startRoutine)
+        private static void HandleRangedInput(
+            bool didPressRightMouse,
+            bool didReleaseRightMouse,
+            PlayerData playerData,
+            GameObject mainCam,
+            GameObject aimCam,
+            Action<IEnumerator> startRoutine)
         {
-            if(didPressRightMouse && playerData.CanAttack)
-                startRoutine(ExecuteMeleeAttack(playerData));
+            if (didPressRightMouse && playerData.CanRangedAttack)
+                InitRangedAttack(playerData, mainCam, aimCam);
+            if (didReleaseRightMouse)
+                startRoutine(ExecuteRangedAttack(playerData, mainCam, aimCam));
         }
 
         // EXECUTION
         private static IEnumerator ExecuteMeleeAttack(PlayerData playerData) 
         {
-            playerData.CanAttack = false;
+            playerData.CanRangedAttack = false;
+            playerData.CanMeleeAttack = false;
             playerData.ActiveSword.SetActive(true);
             playerData.InactiveSword.SetActive(false);
-            playerData.Anim.SetLayerWeight(playerData.Anim.GetLayerIndex("Attack Layer"), 1);
+            playerData.Anim.SetLayerWeight(playerData.Anim.GetLayerIndex("Melee Layer"), 1);
             playerData.Anim.SetTrigger("SwordAttack");
 
-            yield return new WaitForSeconds(playerData.AttackCooldown);
-            playerData.Anim.SetLayerWeight(playerData.Anim.GetLayerIndex("Attack Layer"), 0);
-            playerData.CanAttack = true;
+            yield return new WaitForSeconds(playerData.MeleeCooldown);
+
+            playerData.Anim.SetLayerWeight(playerData.Anim.GetLayerIndex("Melee Layer"), 0);
+            playerData.CanRangedAttack = true;
+            playerData.CanMeleeAttack = true;
             playerData.ActiveSword.SetActive(false);
             playerData.InactiveSword.SetActive(true);
+        }
+
+        private static void InitRangedAttack(PlayerData playerData, GameObject mainCam, GameObject aimCam) 
+        {
+            playerData.CanRangedAttack = false;
+            playerData.CanMeleeAttack = false;
+            playerData.ActiveBow.SetActive(true);
+            playerData.InactiveBow.SetActive(false);
+            playerData.Anim.SetLayerWeight(playerData.Anim.GetLayerIndex("Ranged Layer"), 1);
+            playerData.Anim.SetTrigger("DrawBow");
+            mainCam.SetActive(false);
+            aimCam.SetActive(false);
+        }
+
+        private static IEnumerator ExecuteRangedAttack(PlayerData playerData, GameObject mainCam, GameObject aimCam) 
+        {
+            playerData.Anim.SetTrigger("ReleaseBow");
+            
+            yield return new WaitForSeconds(playerData.RangedCooldown);
+
+            playerData.Anim.SetLayerWeight(playerData.Anim.GetLayerIndex("Ranged Layer"), 0);
+            playerData.CanRangedAttack = true;
+            playerData.CanMeleeAttack = true;
+            playerData.ActiveBow.SetActive(false);
+            playerData.InactiveBow.SetActive(true);
+            mainCam.SetActive(true);
+            aimCam.SetActive(false);
         }
 
         public static void ExecuteDirectionalMovement(PlayerData playerData, Vector3 direction)
         {
             playerData.CurrentSpeed = Input.GetKey(KeyCode.LeftShift) ? playerData.RunSpeed : playerData.WalkSpeed;
             float targetAngle = CalcTargetAngleRelativeToCamera(direction, playerData.Cam.eulerAngles.y);
+            // float targetAngle = playerData.Cam.eulerAngles.y;
+            playerData.Player.transform.rotation = Quaternion.Euler(0f, playerData.Cam.eulerAngles.y, 0f);
 
-            playerData.Player.transform.rotation = CalcRotation(
-                targetAngle,
-                playerData.Player.transform.eulerAngles.y,
-                playerData.TurnSmoothTime
-            );
+            // playerData.Player.transform.rotation = CalcRotation(
+            //     targetAngle,
+            //     playerData.Player.transform.eulerAngles.y,
+            //     playerData.TurnSmoothTime
+            // );
 
             Vector3 directionalMovementVector = CalcMoveDirection(targetAngle);
             playerData.XVelocity = directionalMovementVector.x * playerData.CurrentSpeed;

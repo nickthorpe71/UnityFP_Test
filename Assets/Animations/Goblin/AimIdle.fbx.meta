@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: c52bf50ad7f73364cb361e4c67876128
+guid: 025133777c1b6f44d9487b44b63851cc
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable:
   - first:
       74: -203655887218126122
-    second: Bow1
+    second: AimIdle
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -35,11 +35,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Bow1
+      name: AimIdle
       takeName: mixamo.com
       internalID: 0
       firstFrame: 0
-      lastFrame: 41
+      lastFrame: 225
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -278,13 +278,13 @@ ModelImporter:
         length: 0
         modified: 0
     skeleton:
-    - name: Standing Aim Recoil(Clone)
+    - name: AimIdle(Clone)
       parentName: 
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: Root
-      parentName: Standing Aim Recoil(Clone)
+      parentName: AimIdle(Clone)
       position: {x: -0.068440504, y: -0.05915695, z: -0.0077140806}
       rotation: {x: 0.01856996, y: 0.71485764, z: -0.012370183, w: 0.69891393}
       scale: {x: 1, y: 1, z: 1}
@@ -394,7 +394,7 @@ ModelImporter:
       rotation: {x: -0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1.0000001, z: 1.0000001}
     - name: mesh
-      parentName: Standing Aim Recoil(Clone)
+      parentName: AimIdle(Clone)
       position: {x: -0, y: 0, z: 0}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}

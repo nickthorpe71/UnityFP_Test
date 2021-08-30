@@ -18,8 +18,11 @@ namespace Data
         private bool isGrounded;
 
         // ATTACK
-        private float attackCooldown = 0.93f;
-        private bool canAttack;
+        private float meleeCooldown = 0.93f;
+        private float rangedCooldown = 1.12f;
+        private bool canMeleeAttack;
+        private bool canRangedAttack;
+        
 
         // GAME REFS
         private Transform cam;
@@ -28,6 +31,8 @@ namespace Data
         private Animator anim;
         private GameObject activeSword;
         private GameObject inactiveSword;
+        private GameObject activeBow;
+        private GameObject inactiveBow;
         
         public PlayerData(
             Transform _cam,
@@ -35,7 +40,9 @@ namespace Data
             CharacterController _controller, 
             Animator _anim,
             GameObject _activeSword,
-            GameObject _inactiveSword) 
+            GameObject _inactiveSword,
+            GameObject _activeBow,
+            GameObject _inactiveBow) 
         {
             // MOVEMENT + JUMP
             XVelocity = 0;
@@ -45,7 +52,8 @@ namespace Data
             IsGrounded = true;
 
             // ATTACK
-            CanAttack = true;
+            CanMeleeAttack = true;
+            CanRangedAttack = true;
 
             // IN GAME REFS
             Cam = _cam;
@@ -54,7 +62,8 @@ namespace Data
             Anim = _anim;
             ActiveSword = _activeSword;
             InactiveSword = _inactiveSword;
-
+            ActiveBow = _activeBow;
+            InactiveBow = _inactiveBow;
         }
 
         // MOVEMENT + JUMP
@@ -70,8 +79,10 @@ namespace Data
         public float JumpHeight { get => jumpHeight; }
 
         // ATTACK
-        public float AttackCooldown { get => attackCooldown; }
-        public bool CanAttack { get => canAttack; set { canAttack = value; } }
+        public float MeleeCooldown { get => meleeCooldown; }
+        public float RangedCooldown { get => rangedCooldown; }
+        public bool CanMeleeAttack { get => canMeleeAttack; set { canMeleeAttack = value; } }
+        public bool CanRangedAttack { get => canRangedAttack; set { canRangedAttack = value; } }
 
         // IN GAME REFS
         public Transform Cam { get => cam; set { cam = value; } }
@@ -80,5 +91,7 @@ namespace Data
         public Animator Anim { get => anim; set { anim = value; } }
         public GameObject ActiveSword { get => activeSword; set { activeSword = value; } }
         public GameObject InactiveSword { get => inactiveSword; set { inactiveSword = value; } }
+        public GameObject ActiveBow { get => activeBow; set { activeBow = value; } }
+        public GameObject InactiveBow { get => inactiveBow; set { inactiveBow = value; } }
     }
 }
