@@ -8,8 +8,6 @@ public class Game : MonoBehaviour
 {
     // PLAYER REFERENCES
     [SerializeField] private Transform playerCam;
-    [SerializeField] private GameObject mainCam;
-    [SerializeField] private GameObject aimCam;
     [SerializeField] private GameObject player;
     [SerializeField] private CharacterController playerController;
     [SerializeField] private Animator playerAnimator;
@@ -46,7 +44,7 @@ public class Game : MonoBehaviour
 
     private void Update() 
     {
-        PlayerActions.HandlePlayerInput(playerData, envPhysicsData.Gravity, mainCam, aimCam, StartRoutine);
+        PlayerActions.HandlePlayerInput(playerData, envPhysicsData.Gravity, StartRoutine);
 
         EnvironmentPhysicsActions.UpdateGravity(
             player.transform,

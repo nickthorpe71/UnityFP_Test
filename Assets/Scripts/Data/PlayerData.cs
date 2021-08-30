@@ -22,6 +22,7 @@ namespace Data
         private float rangedCooldown = 1.12f;
         private bool canMeleeAttack;
         private bool canRangedAttack;
+        private bool aiming;
         
 
         // GAME REFS
@@ -54,6 +55,7 @@ namespace Data
             // ATTACK
             CanMeleeAttack = true;
             CanRangedAttack = true;
+            Aiming = false;
 
             // IN GAME REFS
             Cam = _cam;
@@ -83,6 +85,7 @@ namespace Data
         public float RangedCooldown { get => rangedCooldown; }
         public bool CanMeleeAttack { get => canMeleeAttack; set { canMeleeAttack = value; } }
         public bool CanRangedAttack { get => canRangedAttack; set { canRangedAttack = value; } }
+        public bool Aiming { get => aiming; set { aiming = value; } }
 
         // IN GAME REFS
         public Transform Cam { get => cam; set { cam = value; } }

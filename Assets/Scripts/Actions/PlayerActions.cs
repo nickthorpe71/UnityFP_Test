@@ -15,12 +15,12 @@ namespace Actions
         }
 
         // INPUT HANDLERS
-        public static void HandlePlayerInput(PlayerData playerData, float gravity, GameObject mainCam, GameObject aimCam, Action<IEnumerator> startRoutine)
+        public static void HandlePlayerInput(PlayerData playerData, float gravity, Action<IEnumerator> startRoutine)
         {
             HandleDirectionalInput(playerData, Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
             HandleJumpInput(Input.GetKeyDown(KeyCode.Space), playerData, gravity);
             HandleMeleeInput(Input.GetKeyDown(KeyCode.Mouse0), playerData, startRoutine);
-            HandleRangedInput(Input.GetKeyDown(KeyCode.Mouse1), Input.GetKeyUp(KeyCode.Mouse1), playerData, mainCam, aimCam, startRoutine);
+            HandleRangedInput(Input.GetKeyDown(KeyCode.Mouse1), Input.GetKeyUp(KeyCode.Mouse1), playerData, startRoutine);
         }
 
         private static void HandleDirectionalInput(PlayerData playerData, float horizontal, float vertical)
@@ -46,18 +46,12 @@ namespace Actions
                 startRoutine(ExecuteMeleeAttack(playerData));
         }
 
-        private static void HandleRangedInput(
-            bool didPressRightMouse,
-            bool didReleaseRightMouse,
-            PlayerData playerData,
-            GameObject mainCam,
-            GameObject aimCam,
-            Action<IEnumerator> startRoutine)
+        private static void HandleRangedInput(bool didPressRightMouse, bool didReleaseRightMouse, PlayerData playerData, Action<IEnumerator> startRoutine)
         {
             if (didPressRightMouse && playerData.CanRangedAttack)
-                InitRangedAttack(playerData, mainCam, aimCam);
+                InitRangedAttack(playerData);
             if (didReleaseRightMouse)
-                startRoutine(ExecuteRangedAttack(playerData, mainCam, aimCam));
+                startRoutine(ExecuteRangedAttack(playerData));
         }
 
         // EXECUTION
@@ -79,20 +73,20 @@ namespace Actions
             playerData.InactiveSword.SetActive(true);
         }
 
-        private static void InitRangedAttack(PlayerData playerData, GameObject mainCam, GameObject aimCam) 
+        private static void InitRangedAttack(PlayerData playerData) 
         {
+            playerData.Aiming = true;
             playerData.CanRangedAttack = false;
             playerData.CanMeleeAttack = false;
             playerData.ActiveBow.SetActive(true);
             playerData.InactiveBow.SetActive(false);
             playerData.Anim.SetLayerWeight(playerData.Anim.GetLayerIndex("Ranged Layer"), 1);
             playerData.Anim.SetTrigger("DrawBow");
-            mainCam.SetActive(false);
-            aimCam.SetActive(false);
         }
 
-        private static IEnumerator ExecuteRangedAttack(PlayerData playerData, GameObject mainCam, GameObject aimCam) 
+        private static IEnumerator ExecuteRangedAttack(PlayerData playerData) 
         {
+            playerData.Aiming = false;
             playerData.Anim.SetTrigger("ReleaseBow");
             
             yield return new WaitForSeconds(playerData.RangedCooldown);
@@ -102,22 +96,25 @@ namespace Actions
             playerData.CanMeleeAttack = true;
             playerData.ActiveBow.SetActive(false);
             playerData.InactiveBow.SetActive(true);
-            mainCam.SetActive(true);
-            aimCam.SetActive(false);
         }
 
         public static void ExecuteDirectionalMovement(PlayerData playerData, Vector3 direction)
         {
             playerData.CurrentSpeed = Input.GetKey(KeyCode.LeftShift) ? playerData.RunSpeed : playerData.WalkSpeed;
             float targetAngle = CalcTargetAngleRelativeToCamera(direction, playerData.Cam.eulerAngles.y);
-            // float targetAngle = playerData.Cam.eulerAngles.y;
-            playerData.Player.transform.rotation = Quaternion.Euler(0f, playerData.Cam.eulerAngles.y, 0f);
 
-            // playerData.Player.transform.rotation = CalcRotation(
-            //     targetAngle,
-            //     playerData.Player.transform.eulerAngles.y,
-            //     playerData.TurnSmoothTime
-            // );
+            if (playerData.Aiming)
+            {
+                playerData.Player.transform.rotation = Quaternion.Euler(0f, playerData.Cam.eulerAngles.y, 0f);
+            }
+            else
+            {
+                playerData.Player.transform.rotation = CalcRotation(
+                targetAngle,
+                playerData.Player.transform.eulerAngles.y,
+                playerData.TurnSmoothTime
+            );
+            }
 
             Vector3 directionalMovementVector = CalcMoveDirection(targetAngle);
             playerData.XVelocity = directionalMovementVector.x * playerData.CurrentSpeed;
