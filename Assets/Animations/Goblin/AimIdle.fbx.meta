@@ -283,6 +283,11 @@ ModelImporter:
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
+    - name: mesh
+      parentName: AimIdle(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
     - name: Root
       parentName: AimIdle(Clone)
       position: {x: -0.068440504, y: -0.05915695, z: -0.0077140806}
@@ -291,7 +296,7 @@ ModelImporter:
     - name: BN_Hips
       parentName: Root
       position: {x: -0.0003409516, y: 0.77747524, z: 0.03438911}
-      rotation: {x: 0.4923497, y: -0.5186116, z: -0.48545972, w: 0.5029538}
+      rotation: {x: 0.24763395, y: -0.29323244, z: -0.66232735, w: 0.64343977}
       scale: {x: 1.0000006, y: 1.0000005, z: 1.0000002}
     - name: BN_LeftUpLeg
       parentName: BN_Hips
@@ -313,25 +318,45 @@ ModelImporter:
       position: {x: -0.11265231, y: 8.881784e-18, z: -8.881784e-18}
       rotation: {x: -0, y: -0, z: 2.3283064e-10, w: 1}
       scale: {x: 1.0000001, y: 1.0000001, z: 0.99999994}
+    - name: BN_RightUpLeg
+      parentName: BN_Hips
+      position: {x: 0.021976905, y: 0.0906106, z: 0}
+      rotation: {x: -0.99991435, y: 0.0130895525, z: -0.000000044703484, w: 0.000000029802322}
+      scale: {x: 0.9999997, y: 0.99999994, z: 1.0000001}
+    - name: BN_RightLeg
+      parentName: BN_RightUpLeg
+      position: {x: 0.30206951, y: 0.000000041993044, z: -0.00052000297}
+      rotation: {x: -0.000000009371434, y: -0.05377538, z: 0.000000033527616, w: 0.9985531}
+      scale: {x: 0.9999999, y: 1, z: 1}
+    - name: BN_RightFoot
+      parentName: BN_RightLeg
+      position: {x: 0.31636772, y: 0.000000055424817, z: -0.000000037043343}
+      rotation: {x: 0.0070811315, y: 0.5409281, z: -0.011008891, w: 0.840967}
+      scale: {x: 1.0000001, y: 1.0000004, z: 1.0000002}
+    - name: BN_RightToeBase
+      parentName: BN_RightFoot
+      position: {x: 0.11265232, y: -0.000000011499156, z: 0.0000000299809}
+      rotation: {x: -0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1.0000001, z: 1.0000001}
     - name: BN_Spine
       parentName: BN_Hips
       position: {x: -0.11062691, y: -3.1554436e-32, z: 0}
-      rotation: {x: 0.000000014901161, y: -0, z: -0, w: 1}
+      rotation: {x: 0.38268343, y: 0, z: 0, w: 0.92387956}
       scale: {x: 0.99999994, y: 1.0000001, z: 0.9999999}
     - name: BN_Spine1
       parentName: BN_Spine
       position: {x: -0.115682654, y: -6.082018e-32, z: 0}
-      rotation: {x: -0.000000014896055, y: -0.02617702, z: -0.000000029412256, w: 0.99965733}
+      rotation: {x: 0.38255227, y: -0.024184324, z: 0.010017474, w: 0.92356294}
       scale: {x: 1, y: 1.0000001, z: 1}
     - name: BN_LeftShoulder
       parentName: BN_Spine1
       position: {x: -0.15692678, y: -0.05477924, z: -0.011729045}
-      rotation: {x: 0.035233058, y: 0.035233002, z: 0.70622844, w: 0.7062285}
+      rotation: {x: -0.09150631, y: -0.3415064, z: 0.8415064, w: 0.40849358}
       scale: {x: 1, y: 0.99999994, z: 1}
     - name: BN_LeftArm
       parentName: BN_LeftShoulder
       position: {x: -0.12758213, y: 0.0000013739999, z: 0.0028935398}
-      rotation: {x: 0.000000016763805, y: 0.0000000074505797, z: 0.022905068, w: 0.9997376}
+      rotation: {x: 0.000000016763806, y: 0.00000000745058, z: 0.02290507, w: 0.9997377}
       scale: {x: 1.0000001, y: 0.99999994, z: 1.0000005}
     - name: BN_LeftForeArm
       parentName: BN_LeftArm
@@ -346,7 +371,7 @@ ModelImporter:
     - name: BN_Neck
       parentName: BN_Spine1
       position: {x: -0.232434, y: -5.68353e-18, z: 2.7124003e-17}
-      rotation: {x: 0.000000028532314, y: 0.107599236, z: 0.000000073611126, w: 0.9941944}
+      rotation: {x: -0.7032332, y: -0.07391272, z: -0.07391272, w: 0.7032332}
       scale: {x: 1.0000002, y: 1, z: 1}
     - name: BN_Head
       parentName: BN_Neck
@@ -373,31 +398,6 @@ ModelImporter:
       position: {x: 0.16164604, y: -0.00000069980354, z: -0.000000006797883}
       rotation: {x: -0.000000051556235, y: -0.00000003587337, z: 0.108866826, w: 0.99405634}
       scale: {x: 1, y: 1.0000001, z: 1.0000002}
-    - name: BN_RightUpLeg
-      parentName: BN_Hips
-      position: {x: 0.021976905, y: 0.0906106, z: 0}
-      rotation: {x: -0.99991435, y: 0.0130895525, z: -0.000000044703484, w: 0.000000029802322}
-      scale: {x: 0.9999997, y: 0.99999994, z: 1.0000001}
-    - name: BN_RightLeg
-      parentName: BN_RightUpLeg
-      position: {x: 0.30206951, y: 0.000000041993044, z: -0.00052000297}
-      rotation: {x: -0.000000009371434, y: -0.05377538, z: 0.000000033527616, w: 0.9985531}
-      scale: {x: 0.9999999, y: 1, z: 1}
-    - name: BN_RightFoot
-      parentName: BN_RightLeg
-      position: {x: 0.31636772, y: 0.000000055424817, z: -0.000000037043343}
-      rotation: {x: 0.0070811315, y: 0.5409281, z: -0.011008891, w: 0.840967}
-      scale: {x: 1.0000001, y: 1.0000004, z: 1.0000002}
-    - name: BN_RightToeBase
-      parentName: BN_RightFoot
-      position: {x: 0.11265232, y: -0.000000011499156, z: 0.0000000299809}
-      rotation: {x: -0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1.0000001, z: 1.0000001}
-    - name: mesh
-      parentName: AimIdle(Clone)
-      position: {x: -0, y: 0, z: 0}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
     armTwist: 0.5
     foreArmTwist: 0.5
     upperLegTwist: 0.5

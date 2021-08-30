@@ -4,8 +4,33 @@ using UnityEngine;
 using Data;
 using Actions;
 
+using System;
+using Cinemachine;
+
 public class Game : MonoBehaviour 
 {
+    // REFACTOR
+    [SerializeField] private CinemachineFreeLook freeCam;
+    private float zoomSpeed = 5f;
+    private float zoomAcceleration = 2.5f;
+    private float zoomInnerRange = 3f;
+    private float zoomOuterRange = 30f;
+    private float currentMiddleRigRadius = 10f;
+    private float newMiddleRigRadius = 10f;
+
+    private float zoomYAxis = 0f;
+    public float ZoomYAxis
+    {
+        get => zoomYAxis;
+        set
+        {
+            if (zoomYAxis == value) return;
+            zoomYAxis = value;
+            AdjustCameraZoomIndex(ZoomYAxis);
+        }
+    }
+
+
     // PLAYER REFERENCES
     [SerializeField] private Transform playerCam;
     [SerializeField] private GameObject player;
@@ -47,7 +72,7 @@ public class Game : MonoBehaviour
         PlayerActions.HandlePlayerInput(playerData, envPhysicsData.Gravity, StartRoutine);
 
         EnvironmentPhysicsActions.UpdateGravity(
-            player.transform,
+            player.transform, // TODO: can be pulled from player data
             playerData,
             envPhysicsData.Gravity,
             envPhysicsData.GroundCheckDistance,
@@ -59,11 +84,43 @@ public class Game : MonoBehaviour
             playerData
         );
 
+        PlayerActions.UpdatePlayerCam(playerData);
+
         PlayerAnimation.Animate(playerAnimator, playerData);
+
+        // REFACTOR
+        ZoomYAxis = Input.GetAxis("Mouse ScrollWheel");   
+    }
+
+    // REFACTOR
+    private void LateUpdate() 
+    {
+        UpdateZoomLevel();
+    }
+
+    private void UpdateZoomLevel()
+    {
+        if (currentMiddleRigRadius == newMiddleRigRadius) return;
+
+        currentMiddleRigRadius = Mathf.Lerp(currentMiddleRigRadius, newMiddleRigRadius, zoomAcceleration * Time.deltaTime);
+        currentMiddleRigRadius = Mathf.Clamp(currentMiddleRigRadius, zoomInnerRange, zoomOuterRange);
+
+        freeCam.m_Orbits[1].m_Radius = currentMiddleRigRadius;
+        freeCam.m_Orbits[0].m_Height = freeCam.m_Orbits[1].m_Radius;
+        freeCam.m_Orbits[2].m_Height = freeCam.m_Orbits[1].m_Radius;
+    }
+
+    private void AdjustCameraZoomIndex(float zoomYAxis)
+    {
+        if (zoomYAxis == 0) return;
+
+        newMiddleRigRadius = currentMiddleRigRadius + (zoomYAxis < 0 ? zoomSpeed : -zoomSpeed);
     }
 
     public void StartRoutine(IEnumerator routine)
     {
         StartCoroutine(routine);
     }
+
+
 }

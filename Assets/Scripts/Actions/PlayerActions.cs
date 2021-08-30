@@ -14,6 +14,23 @@ namespace Actions
             controller.Move(playerData.Velocity * Time.deltaTime);
         }
 
+        // CAMERA
+        public static void UpdatePlayerCam(PlayerData playerData)
+        {
+            UpdateLookRotation(playerData);
+        }
+
+        private static void UpdateLookRotation(PlayerData playerData)
+        {
+            if(playerData.Aiming)
+                playerData.Player.transform.rotation = Quaternion.Euler(0f, playerData.Cam.eulerAngles.y, 0f);
+        }
+
+        private static void UpdateZoom()
+        {
+            
+        }
+
         // INPUT HANDLERS
         public static void HandlePlayerInput(PlayerData playerData, float gravity, Action<IEnumerator> startRoutine)
         {
@@ -103,17 +120,12 @@ namespace Actions
             playerData.CurrentSpeed = Input.GetKey(KeyCode.LeftShift) ? playerData.RunSpeed : playerData.WalkSpeed;
             float targetAngle = CalcTargetAngleRelativeToCamera(direction, playerData.Cam.eulerAngles.y);
 
-            if (playerData.Aiming)
-            {
-                playerData.Player.transform.rotation = Quaternion.Euler(0f, playerData.Cam.eulerAngles.y, 0f);
-            }
-            else
+            if (!playerData.Aiming)
             {
                 playerData.Player.transform.rotation = CalcRotation(
                 targetAngle,
                 playerData.Player.transform.eulerAngles.y,
-                playerData.TurnSmoothTime
-            );
+                playerData.TurnSmoothTime);
             }
 
             Vector3 directionalMovementVector = CalcMoveDirection(targetAngle);
